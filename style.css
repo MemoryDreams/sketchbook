@@ -1,0 +1,127 @@
+:root {
+    --leftside: 250px;
+    --boxinside: calc(var(--leftside) - 100px);
+    --back-1: #100f1e;
+    --back1: #222034;
+    --back2: #3b3950;
+    --back3: #535170;
+    --front1: #cbdbfc;
+    --front2: #847e87;
+}
+
+* ::after, * ::before, * {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--back2);
+    font-family: monospace;
+}
+
+#leftside {
+    border: 1px solid var(--back-1);
+    width: var(--leftside);
+    height: 100%;
+    background-color: var(--back1);
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 2px 2px 15px 5px;
+}
+
+img {
+    image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
+    image-rendering: -moz-crisp-edges;          /* Firefox                        */
+    image-rendering: -o-crisp-edges;            /* Opera                          */
+    image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+    image-rendering: pixelated;                 /* Chrome                         */
+    image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
+    -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+}
+
+.favicon {
+    width: var(--boxinside);
+}
+
+#colorselection {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    align-items: center;
+}
+
+#colorhex {
+    width: var(--boxinside);
+    background-color: var(--back2);
+    border: 2px solid var(--back-1);
+    color: var(--front1);
+}
+
+#colorhex:focus, button:active {
+    outline: none;
+    background-color: var(--back3);
+}
+
+#colorgreed {
+    width: var(--boxinside);
+    height: var(--boxinside);
+    border: 2px solid var(--back-1);
+}
+
+#canvassize, #tools {
+    display: flex;
+    flex-direction: row;
+    width: var(--boxinside);
+    justify-content: space-between;
+}
+
+.manage {
+    background-color: #222034;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button {
+    border: 2px solid var(--back-1);
+}
+
+button:hover {
+    background-color: var(--back2);
+}
+
+hr {
+    width: 80%;
+    background-color: var(--front1);
+}
+
+h1 {
+    color: var(--front1);
+    margin-top: 50px;
+    font-family: monospace;
+}
+
+#rightside {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#canvas {
+    border: 2px solid var(--back-1);
+    width: 400px;
+    height: 400px;
+    background-color: var(--back1);
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    grid-template-rows: repeat(16, 1fr);
+}
+
+#canvas div {
+    border: 1px solid var(--front2)
+}

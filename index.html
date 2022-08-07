@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+    <title>Sketchbook</title>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div id="leftside">
+        <div id="image">
+            <img class="favicon" src="favicon.png">
+        </div>
+        <div id="colorselection">
+            <div id="colorgreed">
+            </div>
+            <input id="colorhex" placeholder="#111111">
+        </div>
+        <hr>
+        <div id="canvassize">
+            <button class="manage" id="16"><img src="16.png"></button>
+            <button class="manage" id="32"><img src="32.png"></button>
+            <button class="manage" id="64"><img src="64.png"></button>
+        </div>
+        <hr>
+        <div id="tools">
+            <button class="manage" id="pen"><img src="pen.png"></button>
+            <button class="manage" id="erase"><img src="erase.png"></button>
+            <button class="manage" id="bucket"><img src="bucket.png"></button>
+        </div>
+    </div>
+    <div id="rightside">
+        <h1>Your special Sketchbook</h1>
+        <div id="canvas">
+
+        </div>
+    </div>
+</body>
+</html>
