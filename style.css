@@ -7,6 +7,9 @@
     --back3: #535170;
     --front1: #cbdbfc;
     --front2: #847e87;
+    --sixteen: repeat(16, 1fr);
+    --thirty: repeat(32, 1fr);
+    --sixtyfour: repeat(64, 1fr);
 }
 
 * ::after, * ::before, * {
@@ -109,6 +112,7 @@ h1 {
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    margin-left: var(--leftside);
 }
 
 #canvas {
@@ -118,8 +122,6 @@ h1 {
     background-color: var(--back1);
     margin-top: 20px;
     display: grid;
-    grid-template-columns: repeat(16, 1fr);
-    grid-template-rows: repeat(16, 1fr);
 }
 
 #canvas div {
