@@ -8,6 +8,14 @@ document.body.onmouseup = () => (mouseDown = false)
 
 let currentTool = 'pen';
 
+document.getElementById('colorhex').addEventListener('keypress', function(e) {
+    let val = document.getElementById('colorhex').value;
+    if (e.key === 'Enter') {
+        console.log(val);
+        setColor(val);
+    }
+});
+
 function exists(element) {
     if(typeof(element) != 'undefined' && element != null){
         return true;
@@ -18,7 +26,7 @@ function exists(element) {
 
 function pen() {
     currentTool = 'pen';
-    penColor = rootStyle.getPropertyValue('--pencolor');
+    penColor = document.getElementById('colorhex').value;
 }
 
 function eraser() {
@@ -133,4 +141,33 @@ function bucketTool() {
     currentTool = 'bucket';
 }
 
+function setColor(hex) {
+        if (hex[0] === '#') {
+            value = hex.slice(1);
+        }
+        if ((value.length !== 6) && (value.length !== 3)) {
+            throw "this is invalid";
+        }
+        let rr;
+        let gg;
+        let bb;
+        if (value.length == 6) {
+            let r = value.slice(0, 2);
+            rr = parseInt(r, 16);
+            let g = value.slice(2, 4);
+            gg = parseInt(g, 16);
+            let b = value.slice(4, 6);
+            bb = parseInt(b, 16);
+        } else if (value.length == 3) {
+            let r = value[0];
+            rr = parseInt(r, 16);
+            let g = value[1];
+            gg = parseInt(g, 16);
+            let b = value[2];
+            bb = parseInt(b, 16);
+            alert("3-digit hex doesn't work at the moment, so please use 6-digit hex value.")
+        } 
+        rgbValue = 'rgb(' + rr + ', ' + gg + ', ' + bb + ')';
+        penColor = rgbValue;
+}
 drawCanvas(16);
