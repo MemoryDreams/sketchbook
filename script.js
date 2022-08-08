@@ -8,10 +8,17 @@ document.body.onmouseup = () => (mouseDown = false)
 
 let currentTool = 'pen';
 
+function exists(element) {
+    if(typeof(element) != 'undefined' && element != null){
+        return true;
+    } else{
+        return false;
+    }
+}
+
 function pen() {
     currentTool = 'pen';
     penColor = rootStyle.getPropertyValue('--pencolor');
-
 }
 
 function eraser() {
@@ -31,39 +38,37 @@ let filling;
 let defaultCanvColor = rootStyle.getPropertyValue('--defaultcanv');
 
 function bucketAction(y, x) {
-    document.getElementById(y + ' ' + x).style.backgroundColor = penColor;
-    const downX = x + 1;
-    const downY = y + 1;
-    const upX = x - 1;
-    const upY = y - 1;
-    const moveDown = document.getElementById(downY + ' ' + x);
-    const moveRight = document.getElementById(y + ' ' + downX);
-    const moveUp = document.getElementById(upY + ' ' + x);
-    const moveLeft = document.getElementById(y + ' ' + upX);
-    //console.log('Y is ' + y + ' and x is ' + x);
-    console.log('Current coordinate is ' + y + ' ' + x);
-    console.log('Coordinate on top is ' + moveUp.id);
-    console.log('Coordinate on bottom is ' + moveDown.id);
-    //console.log(document.getElementById(upY + ' ' + x).style.getPropertyValue('background-color'));
-    //console.log(filling);
-    if ((moveDown.style.getPropertyValue('background-color') == filling)) {
-        console.log('down');
-        bucketAction(downY, x);
-    } else {
-        console.log('either black or null downthere');
+    if (document.getElementById(y + ' ' + x).style.getPropertyValue('background-color') !== penColor) {
+        document.getElementById(y + ' ' + x).style.backgroundColor = penColor;
+        const downX = x + 1;
+        const downY = y + 1;
+        const upX = x - 1;
+        const upY = y - 1;
+        const moveDown = document.getElementById(downY + ' ' + x);
+        const moveRight = document.getElementById(y + ' ' + downX);
+        const moveUp = document.getElementById(upY + ' ' + x);
+        const moveLeft = document.getElementById(y + ' ' + upX);
+        if (exists(moveDown)) {
+            if (moveDown.style.getPropertyValue('background-color') == filling) {
+                bucketAction(downY, x);
+            } 
+        }
+        if (exists(moveRight)) {
+            if (moveRight.style.getPropertyValue('background-color') == filling) {
+                bucketAction(y, downX);
+            } 
+        }
+        if (exists(moveUp)) {
+            if (moveUp.style.getPropertyValue('background-color') == filling) {
+                bucketAction(upY, x);
+            } 
+        }
+        if (exists(moveLeft)) {
+            if (moveLeft.style.getPropertyValue('background-color') == filling) {
+                bucketAction(y, upX);
+            } 
+        }
     }
-    if ((moveRight.style.getPropertyValue('background-color') == filling)) {
-        console.log('right');
-        bucketAction(y, downX);
-    } 
-    if ((moveUp.style.getPropertyValue('background-color') == filling)) {
-        console.log('up');
-        bucketAction(upY, x);
-    } 
-    if ((moveLeft.style.getPropertyValue('background-color') == filling)) {
-        console.log('left');
-        bucketAction(y, upX);
-    } 
 }
 
 //check current tool and then go to dedicated function
