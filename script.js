@@ -1,4 +1,22 @@
 const canvas = document.getElementById('canvas');
+const rootStyle = getComputedStyle(document.documentElement);
+let penColor = rootStyle.getPropertyValue('--pencolor');
+let mouseDown = false;
+
+function pen() {
+    penColor = rootStyle.getPropertyValue('--pencolor');
+
+}
+
+function eraser() {
+    penColor = rootStyle.getPropertyValue('--defaultcanv');
+}
+
+function putPixel() {
+    if (mouseDown) {
+        event.target.style.backgroundColor = penColor;
+    }
+}
 
 function drawCanvas(pix) {
     clearCanvas();
@@ -7,7 +25,10 @@ function drawCanvas(pix) {
         for (let l = 1; l <= pix; l++) {
             let div = document.createElement('div');
             div.className = 'pixel';
-            div.
+            div.setAttribute('id', i + ':' + l)
+            div.addEventListener("mousedown", function(){ mouseDown = true;});
+            div.addEventListener("mouseup", function(){ mouseDown = false;});
+            div.addEventListener("mouseover", function(){ putPixel(); });
             canvas.appendChild(div);
         }
     }
@@ -39,3 +60,5 @@ function clearCells() {
 }
 
 drawCanvas(16);
+
+console.log();
