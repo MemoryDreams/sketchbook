@@ -180,5 +180,8 @@ function setColor(hex) {
         } 
         rgbValue = 'rgb(' + rr + ', ' + gg + ', ' + bb + ')';
         penColor = rgbValue;
+        document.getElementById('colorgreed').style.backgroundColor = rgbValue;
 }
+
+document.getElementById('colorgreed').style.backgroundColor = penColor;
 drawCanvas(16);
