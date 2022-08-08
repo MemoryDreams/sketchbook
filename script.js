@@ -16,6 +16,10 @@ document.getElementById('colorhex').addEventListener('keypress', function(e) {
     }
 });
 
+function dripper() {
+    currentTool = 'dripper';
+}
+
 function exists(element) {
     if(typeof(element) != 'undefined' && element != null){
         return true;
@@ -93,6 +97,11 @@ function putPixel() {
             filling = event.target.style.getPropertyValue('background-color');
             bucketAction(y, x);
             break;
+        case 'dripper':
+            let val = document.getElementById('colorhex').value
+            let set = event.target.style.getPropertyValue('background-color');
+            val = set;
+            
     }
 }
 
@@ -144,6 +153,9 @@ function bucketTool() {
 function setColor(hex) {
         if (hex[0] === '#') {
             value = hex.slice(1);
+            console.log('slices');
+        } else {
+            value = hex;
         }
         if ((value.length !== 6) && (value.length !== 3)) {
             throw "this is invalid";
@@ -159,13 +171,12 @@ function setColor(hex) {
             let b = value.slice(4, 6);
             bb = parseInt(b, 16);
         } else if (value.length == 3) {
-            let r = value[0];
+            let r = value[0] + value[0];
             rr = parseInt(r, 16);
-            let g = value[1];
+            let g = value[1] + value[1];
             gg = parseInt(g, 16);
-            let b = value[2];
+            let b = value[2] + value[2];
             bb = parseInt(b, 16);
-            alert("3-digit hex doesn't work at the moment, so please use 6-digit hex value.")
         } 
         rgbValue = 'rgb(' + rr + ', ' + gg + ', ' + bb + ')';
         penColor = rgbValue;
