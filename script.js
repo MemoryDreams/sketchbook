@@ -1,20 +1,85 @@
 const canvas = document.getElementById('canvas');
 const rootStyle = getComputedStyle(document.documentElement);
 let penColor = rootStyle.getPropertyValue('--pencolor');
-let mouseDown = false;
+
+let mouseDown = false
+document.body.onmousedown = () => (mouseDown = true)
+document.body.onmouseup = () => (mouseDown = false)
+
+let currentTool = 'pen';
 
 function pen() {
+    currentTool = 'pen';
     penColor = rootStyle.getPropertyValue('--pencolor');
 
 }
 
 function eraser() {
+    currentTool = 'pen';
     penColor = rootStyle.getPropertyValue('--defaultcanv');
 }
 
+function drawPixel() {
+    if (currentTool === 'pen') {
+        if (mouseDown) {
+            event.target.style.backgroundColor = penColor;
+        }
+    }
+}
+
+let filling;
+let defaultCanvColor = rootStyle.getPropertyValue('--defaultcanv');
+
+function bucketAction(y, x) {
+    document.getElementById(y + ' ' + x).style.backgroundColor = penColor;
+    const downX = x + 1;
+    const downY = y + 1;
+    const upX = x - 1;
+    const upY = y - 1;
+    const moveDown = document.getElementById(downY + ' ' + x);
+    const moveRight = document.getElementById(y + ' ' + downX);
+    const moveUp = document.getElementById(upY + ' ' + x);
+    const moveLeft = document.getElementById(y + ' ' + upX);
+    //console.log('Y is ' + y + ' and x is ' + x);
+    console.log('Current coordinate is ' + y + ' ' + x);
+    console.log('Coordinate on top is ' + moveUp.id);
+    console.log('Coordinate on bottom is ' + moveDown.id);
+    //console.log(document.getElementById(upY + ' ' + x).style.getPropertyValue('background-color'));
+    //console.log(filling);
+    if ((moveDown.style.getPropertyValue('background-color') == filling)) {
+        console.log('down');
+        bucketAction(downY, x);
+    } else {
+        console.log('either black or null downthere');
+    }
+    if ((moveRight.style.getPropertyValue('background-color') == filling)) {
+        console.log('right');
+        bucketAction(y, downX);
+    } 
+    if ((moveUp.style.getPropertyValue('background-color') == filling)) {
+        console.log('up');
+        bucketAction(upY, x);
+    } 
+    if ((moveLeft.style.getPropertyValue('background-color') == filling)) {
+        console.log('left');
+        bucketAction(y, upX);
+    } 
+}
+
+//check current tool and then go to dedicated function
 function putPixel() {
-    if (mouseDown) {
-        event.target.style.backgroundColor = penColor;
+    switch (currentTool) {
+        case 'pen':
+            event.target.style.backgroundColor = penColor;
+            break;
+        case 'bucket':
+            let ident = event.target.id;
+            let coord = ident.trim().split(/\s+/);
+            let y = parseInt(coord[0]);
+            let x = parseInt(coord[1]);
+            filling = event.target.style.getPropertyValue('background-color');
+            bucketAction(y, x);
+            break;
     }
 }
 
@@ -25,10 +90,10 @@ function drawCanvas(pix) {
         for (let l = 1; l <= pix; l++) {
             let div = document.createElement('div');
             div.className = 'pixel';
-            div.setAttribute('id', i + ':' + l)
-            div.addEventListener("mousedown", function(){ mouseDown = true;});
-            div.addEventListener("mouseup", function(){ mouseDown = false;});
-            div.addEventListener("mouseover", function(){ putPixel(); });
+            div.setAttribute('id', i + ' ' + l)
+            div.style.setProperty('background-color', defaultCanvColor);
+            div.addEventListener("click", function(){ putPixel(); });
+            div.addEventListener("mouseover", function(){ drawPixel(); });
             canvas.appendChild(div);
         }
     }
@@ -59,6 +124,8 @@ function clearCells() {
     document.documentElement.style.setProperty('--border', '0px');
 }
 
-drawCanvas(16);
+function bucketTool() {
+    currentTool = 'bucket';
+}
 
-console.log();
+drawCanvas(16);

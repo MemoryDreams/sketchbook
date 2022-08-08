@@ -1,14 +1,14 @@
 :root {
     --leftside: 250px;
     --boxinside: calc(var(--leftside) - 100px);
-    --back-1: #100f1e;
-    --back1: #222034;
-    --back2: #3b3950;
-    --back3: #535170;
-    --front1: #cbdbfc;
-    --front2: #847e87;
-    --defaultcanv: bisque;
-    --pencolor: #111111;
+    --back-1:rgb(16, 15, 30);
+    --back1:rgb(34, 32, 52);
+    --back2:rgb(59, 57, 80);
+    --back3:rgb(83, 81, 112);
+    --front1:rgb(203, 219, 252);
+    --front2:rgb(132, 126, 135);
+    --defaultcanv:rgb(255, 228, 196);
+    --pencolor:rgb(17, 17, 17);
     --border: 0;
 }
 
@@ -44,6 +44,7 @@ img {
     image-rendering: pixelated;                 /* Chrome                         */
     image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
     -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+    pointer-events: none;
 }
 
 .favicon {
