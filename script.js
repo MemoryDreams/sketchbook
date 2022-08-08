@@ -7,10 +7,16 @@ function drawCanvas(pix) {
         for (let l = 1; l <= pix; l++) {
             let div = document.createElement('div');
             div.className = 'pixel';
+            div.
             canvas.appendChild(div);
         }
     }
     return 0;
+}
+
+function clearPic() {
+    let num = document.documentElement.style.getPropertyValue('--number');
+    drawCanvas(num);
 }
 
 function clearCanvas() {
@@ -21,3 +27,15 @@ function clearCanvas() {
         }
     }
 }
+
+function setCells() {
+    document.getElementById('cells').setAttribute('onclick', 'clearCells()');
+    document.documentElement.style.setProperty('--border', '1px');
+}
+
+function clearCells() {
+    document.getElementById('cells').setAttribute('onclick', 'setCells()');
+    document.documentElement.style.setProperty('--border', '0px');
+}
+
+drawCanvas(16);

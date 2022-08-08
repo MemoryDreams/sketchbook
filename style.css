@@ -7,6 +7,9 @@
     --back3: #535170;
     --front1: #cbdbfc;
     --front2: #847e87;
+    --defaultcanv: bisque;
+    --pencolor: #111111;
+    --border: 0;
 }
 
 * ::after, * ::before, * {
@@ -30,6 +33,7 @@ body {
     align-items: center;
     gap: 20px;
     box-shadow: 2px 2px 15px 5px;
+    overflow-y: scroll;
 }
 
 img {
@@ -71,11 +75,14 @@ img {
     border: 2px solid var(--back-1);
 }
 
-#canvassize, #tools {
+#canvassize, #tools, #preferences {
     display: flex;
     flex-direction: row;
     width: var(--boxinside);
     justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .manage {
@@ -123,6 +130,16 @@ h1 {
     grid-template-rows: repeat(var(--number), 1fr);
 }
 
-#canvas div {
-    border: 1px solid var(--front2)
+.pixel {
+    background-color: var(--defaultcanv);
+    border: var(--border) solid var(--front2);
+    user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+.pixel:hover {
+    background-color: var(--pencolor);
 }
