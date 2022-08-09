@@ -110,9 +110,12 @@ function putPixel() {
             bucketAction(y, x);
             break;
         case 'dripper':
-            let val = document.getElementById('colorhex').value
-            let set = event.target.style.getPropertyValue('background-color');
-            val = set;
+            let color = event.target.style.getPropertyValue('background-color');
+            document.getElementById('colorhex').value = color;
+            document.getElementById('colorgreed').style.backgroundColor = color;
+            penColor = color;
+            currentTool = 'pen';
+            break;
             
     }
 }
@@ -163,7 +166,7 @@ function bucketTool() {
 }
 
 function setColor(hex) {
-    if (currentTool === 'eraser') {
+    if ((currentTool === 'eraser') || (currentTool === 'dripper')) {
         currentTool = 'pen';
     }
         if (hex[0] === '#') {
