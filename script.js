@@ -300,18 +300,30 @@ function rgb2hex(val) {
     return '#' + R + G + B;
 }
 
+function rgb2pngStart(val) {
+    let finish = val.length - 1;
+    let sliced = val.slice(4, finish)
+    let stringAr = sliced.split(', ');
+    let R = parseInt(stringAr[0]);
+    let G = parseInt(stringAr[1]);
+    let B = parseInt(stringAr[2]);
+    let pixelArray = [R, G, B];
+    return pixelArray;
+}
+
 function createArray() {
     let sideInPixels = document.documentElement.style.getPropertyValue('--number');
-    let pixelArray = [];
+    let canvasX = [];
+    let canvasY = [];
     for (let i = 1; i <= sideInPixels; i++) {
         for (let j = 1; j <= sideInPixels; j++) {
             let pixel = document.getElementById(i + ' ' + j).style.backgroundColor;
-            console.log(rgb2hex(pixel));
-            pixelArray[i].push(pixel);
+            canvasX[j - 1] = rgb2pngStart(pixel);
         }
+        canvasY[i - 1] = canvasX;
     }
-    console.log(pixelArray); 
+    return canvasY; 
 }
 
 document.getElementById('thatcolorpad').style.backgroundColor = penColor;
-drawCanvas(32);
+drawCanvas(4);
