@@ -172,6 +172,11 @@ h1 {
 
 @media screen and (max-width: 600px) {
 
+    body {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
     #leftside {
         width: 100%;
         height: unset;

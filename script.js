@@ -111,8 +111,8 @@ function putPixel() {
             break;
         case 'dripper':
             let color = event.target.style.getPropertyValue('background-color');
-            document.getElementById('colorhex').value = color;
-            document.getElementById('colorgreed').style.backgroundColor = color;
+            document.getElementById('colorhex').value = rgb2hex(color);
+            document.getElementById('thatcolorpad').style.backgroundColor = color;
             penColor = color;
             currentTool = 'pen';
             break;
@@ -199,6 +199,30 @@ function setColor(hex) {
         rgbValue = 'rgb(' + rr + ', ' + gg + ', ' + bb + ')';
         penColor = rgbValue;
         document.getElementById('thatcolorpad').style.backgroundColor = rgbValue;
+        document.getElementById('colorhex').value = rgb2hex(rgbValue);
+}
+
+//self-explanatory function. I like to work with hex, but browsers not always allow it. 
+function rgb2hex(val) {
+    let finish = val.length - 1;
+    let sliced = val.slice(4, finish)
+    let stringAr = sliced.split(', ');
+    let R = parseInt(stringAr[0]);
+    let G = parseInt(stringAr[1]);
+    let B = parseInt(stringAr[2]);
+    R = R.toString(16);
+    if (R.length < 2) {
+        R = 0 + R;
+    }
+    G = G.toString(16);
+    if (G.length < 2) {
+        G = 0 + G;
+    }
+    B = B.toString(16);
+    if (B.length < 2) {
+        B = 0 + B;
+    }
+    return '#' + R + G + B;
 }
 
 document.getElementById('thatcolorpad').style.backgroundColor = penColor;
