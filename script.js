@@ -18,6 +18,7 @@ document.getElementById('colorhex').addEventListener('keypress', function(e) {
 
 function dripper() {
     currentTool = 'dripper';
+    console.log(currentTool);
 }
 
 function exists(element) {
@@ -31,18 +32,26 @@ function exists(element) {
 function pen() {
     currentTool = 'pen';
     penColor = document.getElementById('colorhex').value;
+    console.log(currentTool);
 }
 
 function eraser() {
-    currentTool = 'pen';
-    penColor = rootStyle.getPropertyValue('--defaultcanv');
+    currentTool = 'eraser';
+    console.log(currentTool);
 }
 
 function drawPixel() {
-    if (currentTool === 'pen') {
-        if (mouseDown) {
-            event.target.style.backgroundColor = penColor;
-        }
+    switch (currentTool) {
+        case 'pen':
+            if (mouseDown) {
+                event.target.style.backgroundColor = penColor;
+            }
+            break;
+        case 'eraser':
+            if (mouseDown) {
+                event.target.style.backgroundColor = rootStyle.getPropertyValue('--defaultcanv');
+            }
+            break;
     }
 }
 
@@ -88,6 +97,9 @@ function putPixel() {
     switch (currentTool) {
         case 'pen':
             event.target.style.backgroundColor = penColor;
+            break;
+        case 'eraser':
+            event.target.style.backgroundColor = rootStyle.getPropertyValue('--defaultcanv');
             break;
         case 'bucket':
             let ident = event.target.id;
