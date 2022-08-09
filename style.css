@@ -144,3 +144,24 @@ h1 {
 .pixel:hover {
     background-color: var(--pencolor);
 }
+
+@media screen and (max-width: 600px) {
+    :root {
+    }
+
+    #leftside {
+        width: 100%;
+        height: unset;
+        position: relative;
+        padding-bottom: 30px;
+    }
+
+    #rightside {
+        margin-left: 0;
+        margin-bottom: 20px;
+    }
+
+    #canvas {
+        max-width: 85vw;
+    }
+}
