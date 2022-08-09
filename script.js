@@ -208,7 +208,7 @@ function drawCanvas(pix) {
             div.className = 'pixel';
             div.setAttribute('id', i + ' ' + l)
             div.style.setProperty('background-color', defaultCanvColor);
-            div.addEventListener("click", function(){ putPixel(); });
+            div.addEventListener("mousedown", function(){ putPixel(); });
             div.addEventListener("mouseover", function(){ drawPixel(); });
             canvas.appendChild(div);
         }
@@ -298,6 +298,19 @@ function rgb2hex(val) {
         B = 0 + B;
     }
     return '#' + R + G + B;
+}
+
+function createArray() {
+    let sideInPixels = document.documentElement.style.getPropertyValue('--number');
+    let pixelArray = [];
+    for (let i = 1; i <= sideInPixels; i++) {
+        for (let j = 1; j <= sideInPixels; j++) {
+            let pixel = document.getElementById(i + ' ' + j).style.backgroundColor;
+            console.log(rgb2hex(pixel));
+            pixelArray[i].push(pixel);
+        }
+    }
+    console.log(pixelArray); 
 }
 
 document.getElementById('thatcolorpad').style.backgroundColor = penColor;
