@@ -8,19 +8,19 @@ document.body.onmouseup = () => (mouseDown = false)
 
 let currentTool = 'pen';
 
+// I honestly don't like this style of code. Anonymous functions suck and I'd prefer not to use it. It works though. Used for entering input value into a function.
 document.getElementById('colorhex').addEventListener('keypress', function(e) {
     let val = document.getElementById('colorhex').value;
     if (e.key === 'Enter') {
-        console.log(val);
         setColor(val);
     }
 });
 
 function dripper() {
     currentTool = 'dripper';
-    console.log(currentTool);
 }
 
+// Used to check if filling algorythm reached the border of canvas
 function exists(element) {
     if(typeof(element) != 'undefined' && element != null){
         return true;
@@ -32,14 +32,13 @@ function exists(element) {
 function pen() {
     currentTool = 'pen';
     penColor = document.getElementById('colorhex').value;
-    console.log(currentTool);
 }
 
 function eraser() {
     currentTool = 'eraser';
-    console.log(currentTool);
 }
 
+// Used to allow you draw by dragging the cursor. Works for pen and eraser
 function drawPixel() {
     switch (currentTool) {
         case 'pen':
@@ -58,6 +57,7 @@ function drawPixel() {
 let filling;
 let defaultCanvColor = rootStyle.getPropertyValue('--defaultcanv');
 
+// Check if you aren't trying to fill for instance black blob with black ink and then perform a recursice algorithm
 function bucketAction(y, x) {
     if (document.getElementById(y + ' ' + x).style.getPropertyValue('background-color') !== penColor) {
         document.getElementById(y + ' ' + x).style.backgroundColor = penColor;
@@ -165,18 +165,18 @@ function bucketTool() {
     currentTool = 'bucket';
 }
 
+// Used to set color to your pen
 function setColor(hex) {
     if ((currentTool === 'eraser') || (currentTool === 'dripper')) {
         currentTool = 'pen';
     }
         if (hex[0] === '#') {
             value = hex.slice(1);
-            console.log('slices');
         } else {
             value = hex;
         }
         if ((value.length !== 6) && (value.length !== 3)) {
-            throw "this is invalid";
+            throw "Only 3-digit and 6-digit hex values are allowed.";
         }
         let rr;
         let gg;
@@ -198,8 +198,8 @@ function setColor(hex) {
         } 
         rgbValue = 'rgb(' + rr + ', ' + gg + ', ' + bb + ')';
         penColor = rgbValue;
-        document.getElementById('colorgreed').style.backgroundColor = rgbValue;
+        document.getElementById('thatcolorpad').style.backgroundColor = rgbValue;
 }
 
-document.getElementById('colorgreed').style.backgroundColor = penColor;
-drawCanvas(16);
+document.getElementById('thatcolorpad').style.backgroundColor = penColor;
+drawCanvas(32);

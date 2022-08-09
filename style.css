@@ -7,7 +7,7 @@
     --back3:rgb(83, 81, 112);
     --front1:rgb(203, 219, 252);
     --front2:rgb(132, 126, 135);
-    --defaultcanv:rgb(255, 255, 255);
+    --defaultcanv:rgb(250, 230, 240);
     --pencolor:rgb(17, 17, 17);
     --border: 0;
 }
@@ -22,6 +22,10 @@ body {
     font-family: monospace;
 }
 
+::-webkit-scrollbar {
+  width: 0;
+}
+
 #leftside {
     border: 1px solid var(--back-1);
     width: var(--leftside);
@@ -33,7 +37,8 @@ body {
     align-items: center;
     gap: 20px;
     box-shadow: 2px 2px 15px 5px;
-    overflow: hidden;
+    overflow-y: auto;
+    padding-bottom: 30px;
 }
 
 img {
@@ -58,10 +63,22 @@ img {
     align-items: center;
 }
 
+#hexvaluepad {
+    display: flex;
+    align-items: center;
+}
+
+#thatcolorpad {
+    width: 30px;    
+    height: 20px;
+    border: 1px solid var(--back-1);
+}
+
 #colorhex {
-    width: var(--boxinside);
+    width: calc(var(--boxinside) - 30px); 
+    height: 20px;
     background-color: var(--back2);
-    border: 2px solid var(--back-1);
+    border: 1px solid var(--back-1);
     color: var(--front1);
 }
 
@@ -70,10 +87,17 @@ img {
     background-color: var(--back3);
 }
 
+.color:hover {
+    border: 2px solid var(--front2);
+}
+
 #colorgreed {
     width: var(--boxinside);
     height: var(--boxinside);
     border: 2px solid var(--back-1);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
 }
 
 #canvassize, #tools, #preferences {
@@ -146,14 +170,11 @@ h1 {
 }
 
 @media screen and (max-width: 600px) {
-    :root {
-    }
 
     #leftside {
         width: 100%;
         height: unset;
         position: relative;
-        padding-bottom: 30px;
     }
 
     #rightside {

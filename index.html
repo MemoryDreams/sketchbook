@@ -16,8 +16,27 @@
         </div>
         <div id="colorselection">
             <div id="colorgreed">
+                <div class="color" style="background-color: #000000;" onclick="setColor('000000')"></div>
+                <div class="color" style="background-color: #1d2b53;" onclick="setColor('1d2b53')"></div>
+                <div class="color" style="background-color: #7e2553;" onclick="setColor('7e2553')"></div>
+                <div class="color" style="background-color: #008751;" onclick="setColor('008751')"></div>
+                <div class="color" style="background-color: #ab5236;" onclick="setColor('ab5236')"></div>
+                <div class="color" style="background-color: #5f574f;" onclick="setColor('5f574f')"></div>
+                <div class="color" style="background-color: #c2c3c7;" onclick="setColor('c2c3c7')"></div>
+                <div class="color" style="background-color: #fff1e8;" onclick="setColor('fff1e8')"></div>
+                <div class="color" style="background-color: #ff004d;" onclick="setColor('ff004d')"></div>
+                <div class="color" style="background-color: #ffa300;" onclick="setColor('ffa300')"></div>
+                <div class="color" style="background-color: #ffec27;" onclick="setColor('ffec27')"></div>
+                <div class="color" style="background-color: #00e436;" onclick="setColor('00e436')"></div>
+                <div class="color" style="background-color: #29adff;" onclick="setColor('29adff')"></div>
+                <div class="color" style="background-color: #83769c;" onclick="setColor('83769c')"></div>
+                <div class="color" style="background-color: #ff77a8;" onclick="setColor('ff77a8')"></div>
+                <div class="color" style="background-color: #ffccaa;" onclick="setColor('ffccaa')"></div>
             </div>
-            <input id="colorhex" placeholder="" value="#111111">
+            <div id="hexvaluepad">
+                <input id="colorhex" placeholder="" value="#111111" >
+                <div id="thatcolorpad"></div>
+            </div>
         </div>
         <hr>
         <div id="canvassize">
@@ -37,6 +56,9 @@
             <button class="manage" id="cells" onclick="setCells()"><img src="cells.png"></button>
             <button class="manage" id="clear" onclick="clearPic()"><img src="clearbutt.png"></button>
             <button class="manage" id="clear" onclick="setColor('#ffffff')"><img src="favicon.png"></button>
+        </div>
+        <div>
+
         </div>
     </div>
     <div id="rightside">
