@@ -163,6 +163,9 @@ function bucketTool() {
 }
 
 function setColor(hex) {
+    if (currentTool === 'eraser') {
+        currentTool = 'pen';
+    }
         if (hex[0] === '#') {
             value = hex.slice(1);
             console.log('slices');
