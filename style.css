@@ -89,7 +89,7 @@ img {
 }
 
 .color:hover {
-    border: 1px solid var(--back1);
+    border: 1px dotted var(--back1);
     background: repeating-linear-gradient(
         45deg,
         transparent,

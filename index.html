@@ -46,16 +46,18 @@
         </div>
         <hr>
         <div id="tools">
-            <button class="manage" id="pen" onclick="pen()"><img src="pen.png"></button>
-            <button class="manage" id="erase" onclick="eraser()"><img src="erase.png"></button>
-            <button class="manage" id="bucket" onclick="bucketTool()"><img src="bucket.png"></button>
-            <button class="manage" id="dripper" onclick="dripper()"><img src="dripper.png"></button>
+            <button class="manage" id="pen" onclick="setTool('pen')"><img src="pen.png"></button>
+            <button class="manage" id="erase" onclick="setTool('eraser')"><img src="erase.png"></button>
+            <button class="manage" id="bucket" onclick="setTool('bucket')"><img src="bucket.png"></button>
+            <button class="manage" id="dripper" onclick="setTool('dripper')"><img src="dripper.png"></button>
+            <button class="manage" id="rainbow" onclick="setTool('rainbow')"><img src="rainbow.png"></button>
+            <button class="manage" id="bucketRainbow" onclick="setTool('bucketRainbow')"><img src="bucketRainbow.png"></button>
         </div>
         <hr>
         <div id="preferences">
             <button class="manage" id="cells" onclick="setCells()"><img src="cells.png"></button>
             <button class="manage" id="clear" onclick="clearPic()"><img src="clearbutt.png"></button>
-            <button class="manage" id="clear" onclick="setColor('#ffffff')"><img src="favicon.png"></button>
+            <button class="manage" id="clear" onclick="setTool('bucketRainbow')"><img src="favicon.png"></button>
         </div>
         <div>
 

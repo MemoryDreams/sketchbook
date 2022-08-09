@@ -8,6 +8,44 @@ document.body.onmouseup = () => (mouseDown = false)
 
 let currentTool = 'pen';
 
+let rainBow = '#ff00cc, #ee34d2, #9c27b0, #50bfe6, #16d0cb, #aaf0d1, #66ff66, #ccff00, #ffff66, #ffcc33, #ff9933, #ff9966, #ff6037, #fd5b78, #ff355e'.split(', ');
+let currentIndex = rainBow.indexOf('#ff00cc'); 
+
+function setTool(tool) {
+    switch (tool) {
+        case 'pen':
+            currentTool = 'pen';
+            penColor = document.getElementById('colorhex').value;
+            break;
+        case 'eraser':
+            currentTool = 'eraser';
+            break;
+        case 'bucket':
+            currentTool = 'bucket';
+            break;
+        case 'dripper':
+            currentTool = 'dripper';
+            break;
+        case 'rainbow':
+            currentTool = 'rainbow';
+            break;
+        case 'bucketRainbow':
+            currentTool = 'bucketRainbow';
+            break;
+    }
+}
+
+function rainbowSlide() {
+    let tool = currentTool;
+    setColor(rainBow[currentIndex]);
+    currentTool = tool;
+    if (currentIndex + 1 > rainBow.length - 1) {
+        currentIndex = 0;
+    } else {
+        currentIndex = currentIndex + 1;        
+    }
+}
+
 // I honestly don't like this style of code. Anonymous functions suck and I'd prefer not to use it. It works though. Used for entering input value into a function.
 document.getElementById('colorhex').addEventListener('keypress', function(e) {
     let val = document.getElementById('colorhex').value;
@@ -15,10 +53,6 @@ document.getElementById('colorhex').addEventListener('keypress', function(e) {
         setColor(val);
     }
 });
-
-function dripper() {
-    currentTool = 'dripper';
-}
 
 // Used to check if filling algorythm reached the border of canvas
 function exists(element) {
@@ -29,13 +63,8 @@ function exists(element) {
     }
 }
 
-function pen() {
-    currentTool = 'pen';
-    penColor = document.getElementById('colorhex').value;
-}
-
-function eraser() {
-    currentTool = 'eraser';
+function plainColor() {
+    event.target.style.backgroundColor = penColor;
 }
 
 // Used to allow you draw by dragging the cursor. Works for pen and eraser
@@ -43,7 +72,7 @@ function drawPixel() {
     switch (currentTool) {
         case 'pen':
             if (mouseDown) {
-                event.target.style.backgroundColor = penColor;
+                plainColor();
             }
             break;
         case 'eraser':
@@ -51,15 +80,94 @@ function drawPixel() {
                 event.target.style.backgroundColor = rootStyle.getPropertyValue('--defaultcanv');
             }
             break;
+        case 'rainbow':
+            if (mouseDown) {
+                rainbowSlide();
+                plainColor();
+            }
     }
 }
+
+//check current tool and then go to dedicated function
+function putPixel() {
+    switch (currentTool) {
+        case 'pen':
+            plainColor();
+            break;
+        case 'eraser':
+            event.target.style.backgroundColor = rootStyle.getPropertyValue('--defaultcanv');
+            break;
+        case 'bucket':
+            let ident = event.target.id;
+            let coord = ident.trim().split(/\s+/);
+            let y = parseInt(coord[0]);
+            let x = parseInt(coord[1]);
+            filling = event.target.style.getPropertyValue('background-color');
+            bucketAction(y, x);
+            break;
+        case 'bucketRainbow':
+            let ident1 = event.target.id;
+            let coord1 = ident1.trim().split(/\s+/);
+            let y1 = parseInt(coord1[0]);
+            let x1 = parseInt(coord1[1]);
+            filling = event.target.style.getPropertyValue('background-color');
+            bucketRainbowAction(y1, x1);
+            break;
+        case 'dripper':
+            let color = event.target.style.getPropertyValue('background-color');
+            document.getElementById('colorhex').value = rgb2hex(color);
+            document.getElementById('thatcolorpad').style.backgroundColor = color;
+            penColor = color;
+            currentTool = 'pen';
+            break;
+        case 'rainbow':
+            rainbowSlide();
+            plainColor();
+            break;            
+    }
+}
+
 
 let filling;
 let defaultCanvColor = rootStyle.getPropertyValue('--defaultcanv');
 
+function bucketRainbowAction(y, x) {
+    if (document.getElementById(y + ' ' + x).style.getPropertyValue('background-color') !== penColor) {
+        rainbowSlide();
+        document.getElementById(y + ' ' + x).style.backgroundColor = penColor;
+        const downX = x + 1;
+        const downY = y + 1;
+        const upX = x - 1;
+        const upY = y - 1;
+        const moveDown = document.getElementById(downY + ' ' + x);
+        const moveRight = document.getElementById(y + ' ' + downX);
+        const moveUp = document.getElementById(upY + ' ' + x);
+        const moveLeft = document.getElementById(y + ' ' + upX);
+        if (exists(moveDown)) {
+            if (moveDown.style.getPropertyValue('background-color') == filling) {
+                bucketRainbowAction(downY, x);
+            } 
+        }
+        if (exists(moveRight)) {
+            if (moveRight.style.getPropertyValue('background-color') == filling) {
+                bucketRainbowAction(y, downX);
+            } 
+        }
+        if (exists(moveUp)) {
+            if (moveUp.style.getPropertyValue('background-color') == filling) {
+                bucketRainbowAction(upY, x);
+            } 
+        }
+        if (exists(moveLeft)) {
+            if (moveLeft.style.getPropertyValue('background-color') == filling) {
+                bucketRainbowAction(y, upX);
+            } 
+        }
+    }
+}
+
 // Check if you aren't trying to fill for instance black blob with black ink and then perform a recursice algorithm
 function bucketAction(y, x) {
-    if (document.getElementById(y + ' ' + x).style.getPropertyValue('background-color') !== penColor) {
         document.getElementById(y + ' ' + x).style.backgroundColor = penColor;
         const downX = x + 1;
         const downY = y + 1;
@@ -89,35 +197,6 @@ function bucketAction(y, x) {
                 bucketAction(y, upX);
             } 
         }
-    }
-}
-
-//check current tool and then go to dedicated function
-function putPixel() {
-    switch (currentTool) {
-        case 'pen':
-            event.target.style.backgroundColor = penColor;
-            break;
-        case 'eraser':
-            event.target.style.backgroundColor = rootStyle.getPropertyValue('--defaultcanv');
-            break;
-        case 'bucket':
-            let ident = event.target.id;
-            let coord = ident.trim().split(/\s+/);
-            let y = parseInt(coord[0]);
-            let x = parseInt(coord[1]);
-            filling = event.target.style.getPropertyValue('background-color');
-            bucketAction(y, x);
-            break;
-        case 'dripper':
-            let color = event.target.style.getPropertyValue('background-color');
-            document.getElementById('colorhex').value = rgb2hex(color);
-            document.getElementById('thatcolorpad').style.backgroundColor = color;
-            penColor = color;
-            currentTool = 'pen';
-            break;
-            
-    }
 }
 
 function drawCanvas(pix) {
@@ -161,13 +240,9 @@ function clearCells() {
     document.documentElement.style.setProperty('--border', '0px');
 }
 
-function bucketTool() {
-    currentTool = 'bucket';
-}
-
 // Used to set color to your pen
 function setColor(hex) {
-    if ((currentTool === 'eraser') || (currentTool === 'dripper')) {
+    if ((currentTool === 'eraser') || (currentTool === 'dripper') || (currentTool === 'bucketRainbow') || (currentTool === 'rainbow')) {
         currentTool = 'pen';
     }
         if (hex[0] === '#') {
