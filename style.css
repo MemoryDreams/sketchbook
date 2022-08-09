@@ -66,19 +66,20 @@ img {
 #hexvaluepad {
     display: flex;
     align-items: center;
+    max-width: var(--boxinside);
 }
 
 #thatcolorpad {
     width: 30px;    
     height: 20px;
-    border: 1px solid var(--back-1);
+    border: 2px solid var(--back-1);
 }
 
 #colorhex {
     width: calc(var(--boxinside) - 30px); 
     height: 20px;
     background-color: var(--back2);
-    border: 1px solid var(--back-1);
+    border: 2px solid var(--back-1);
     color: var(--front1);
 }
 
@@ -92,7 +93,7 @@ img {
 }
 
 #colorgreed {
-    width: var(--boxinside);
+    width: calc(var(--boxinside) - 4px);
     height: var(--boxinside);
     border: 2px solid var(--back-1);
     display: grid;
