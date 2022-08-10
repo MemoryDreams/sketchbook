@@ -307,7 +307,7 @@ function rgb2rgbaArray(val) {
     let R = parseInt(stringAr[0]);
     let G = parseInt(stringAr[1]);
     let B = parseInt(stringAr[2]);
-    let pixelArray = [R, G, B, 255];
+    let pixelArray = [R, G, B];
     return pixelArray;
 }
 
@@ -318,10 +318,11 @@ function createArray() {
         let row = new Array(sideInPixels);
         for (let j = 1; j <= sideInPixels; j++) {
             let pixel = document.getElementById(i + ' ' + j).style.getPropertyValue('background-color');
-            row[j - 1] = new Uint8ClampedArray(rgb2rgbaArray(pixel));
+            row[j - 1] = rgb2rgbaArray(pixel);
         }
         canvasArray[i - 1] = row;
     }
+    console.log(canvasArray)
     return canvasArray;
 }
 
@@ -330,7 +331,49 @@ function createImg() {
     let div = document.createElement('div');
     div.setAttribute('id', 'output');
     document.getElementById('rightside').appendChild(div);
-    createArray();
+    var pixelSize = 1;
+    var c = document.createElement("canvas");
+    var img = createArray();
+    c.height = img[0].length * pixelSize;
+    c.width = img.length * pixelSize;
+    document.body.appendChild(c);
+    var ctx = c.getContext("2d");
+    ctx.clearRect(0, 0, c.width, c.height);
+
+    for (var i = 0; i < img.length; i++) {
+        for (var j = 0; j < img[0].length; j++) {
+            ctx.fillStyle = "rgb("+img[i][j][0]+","+img[i][j][1]+","+img[i][j][2]+")";
+            ctx.fillRect(i*pixelSize, j*pixelSize, pixelSize, pixelSize);
+        }
+    }
+
+    console.log(c.toDataURL("image/png"));
+    var png = document.createElement("img");
+    png.src = c.toDataURL("image/png");
+    c.remove();
+    document.getElementById('output').appendChild(png);
+
+
+
+    
+    // let canvas = document.createElement('canvas');
+    // let pixelsData = createArray();
+    // canvas.height = pixelsData.length;
+    // canvas.width = pixelsData[0].length;
+    // document.body.appendChild(canvas);
+    // let img = document.createElement('img');
+    // img.setAttribute('src', canvas.toDataURL("image/png"));
+    
+    // let ctx = canvas.getContext("2d");
+    // for (var y = 0; y < pixelsData.length; ++y) {
+    //   for (var x = 0; x < pixelsData[y].length; ++x) {
+    //     ctx.fillStyle = pixelsData[y][x];  
+    //     ctx.fillRect(x, y, 1, 1);
+    //   }
+    // }
+    // img.setAttribute('src', canvas.toDataURL("image/png"));
+    // console.log(canvas.toDataURL("image/png"));
+
 }
 
 setColor('#111111');

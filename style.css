@@ -49,7 +49,14 @@ img {
     image-rendering: pixelated;                 /* Chrome                         */
     image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
     -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+}
+
+#leftside img {
     pointer-events: none;
+}
+
+#output img {
+    width: 100%;
 }
 
 .favicon {
