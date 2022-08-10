@@ -322,9 +322,7 @@ function createArray() {
         }
         canvasArray[i - 1] = row;
     }
-    console.log(canvasArray);
-    // let actualCanvas = new Uint8ClampedArray(canvasY);
-    // return actualCanvas; 
+    return (canvasArray);
 }
 
 
