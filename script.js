@@ -318,16 +318,20 @@ function createArray() {
         let row = new Array(sideInPixels);
         for (let j = 1; j <= sideInPixels; j++) {
             let pixel = document.getElementById(i + ' ' + j).style.getPropertyValue('background-color');
-            row[j - 1] = rgb2rgbaArray(pixel);
+            row[j - 1] = pixel;
         }
         canvasArray[i - 1] = row;
     }
-    console.log(canvasArray)
     return canvasArray;
 }
 
 
 function createImg() {
+    if (exists(document.getElementById('output'))) {
+        document.getElementById('output').querySelector('img').remove();
+        document.getElementById('output').remove();
+    }
+
     let div = document.createElement('div');
     div.setAttribute('id', 'output');
     document.getElementById('rightside').appendChild(div);
@@ -342,38 +346,15 @@ function createImg() {
 
     for (var i = 0; i < img.length; i++) {
         for (var j = 0; j < img[0].length; j++) {
-            ctx.fillStyle = "rgb("+img[i][j][0]+","+img[i][j][1]+","+img[i][j][2]+")";
+            ctx.fillStyle = img[j][i];
             ctx.fillRect(i*pixelSize, j*pixelSize, pixelSize, pixelSize);
         }
     }
 
-    console.log(c.toDataURL("image/png"));
     var png = document.createElement("img");
     png.src = c.toDataURL("image/png");
     c.remove();
     document.getElementById('output').appendChild(png);
-
-
-
-    
-    // let canvas = document.createElement('canvas');
-    // let pixelsData = createArray();
-    // canvas.height = pixelsData.length;
-    // canvas.width = pixelsData[0].length;
-    // document.body.appendChild(canvas);
-    // let img = document.createElement('img');
-    // img.setAttribute('src', canvas.toDataURL("image/png"));
-    
-    // let ctx = canvas.getContext("2d");
-    // for (var y = 0; y < pixelsData.length; ++y) {
-    //   for (var x = 0; x < pixelsData[y].length; ++x) {
-    //     ctx.fillStyle = pixelsData[y][x];  
-    //     ctx.fillRect(x, y, 1, 1);
-    //   }
-    // }
-    // img.setAttribute('src', canvas.toDataURL("image/png"));
-    // console.log(canvas.toDataURL("image/png"));
-
 }
 
 setColor('#111111');
