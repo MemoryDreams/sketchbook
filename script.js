@@ -300,7 +300,7 @@ function rgb2hex(val) {
     return '#' + R + G + B;
 }
 
-function rgb2pngStart(val) {
+function rgb2rgbaArray(val) {
     let finish = val.length - 1;
     let sliced = val.slice(4, finish)
     let stringAr = sliced.split(', ');
@@ -313,15 +313,16 @@ function rgb2pngStart(val) {
 
 function createArray() {
     let sideInPixels = document.documentElement.style.getPropertyValue('--number');
-    let row = [Array(sideInPixels)];
+    let canvasArray = new Array(sideInPixels);
     for (let i = 1; i <= sideInPixels; i++) {
+        let row = new Array(sideInPixels);
         for (let j = 1; j <= sideInPixels; j++) {
             let pixel = document.getElementById(i + ' ' + j).style.getPropertyValue('background-color');
-            console.log(i + ':' + j + ' color is ' + rgb2pngStart(pixel));
-            row[i - 1][j - 1] = rgb2pngStart(pixel);
-            console.log(row);
+            row[j - 1] = rgb2rgbaArray(pixel);
         }
+        canvasArray[i - 1] = row;
     }
+    console.log(canvasArray);
     // let actualCanvas = new Uint8ClampedArray(canvasY);
     // return actualCanvas; 
 }
@@ -333,4 +334,4 @@ function createImg() {
 
 setColor('#112111');
 document.getElementById('thatcolorpad').style.backgroundColor = penColor;
-drawCanvas(100);
+drawCanvas(4);
