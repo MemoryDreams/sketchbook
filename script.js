@@ -300,14 +300,20 @@ function rgb2hex(val) {
     return '#' + R + G + B;
 }
 
-function rgb2rgbaArray(val) {
+function rgb2rgba(val) {
     let finish = val.length - 1;
     let sliced = val.slice(4, finish)
     let stringAr = sliced.split(', ');
     let R = parseInt(stringAr[0]);
     let G = parseInt(stringAr[1]);
     let B = parseInt(stringAr[2]);
-    let pixelArray = [R, G, B];
+    let A;
+    if ((R === 250) && (G === 230) && (B === 240)) {
+        A = 0;
+    } else {
+        A = 255;
+    }
+    let pixelArray = "rgba(" + R + ", " + G + ", " + B + ", " + A + ")"
     return pixelArray;
 }
 
@@ -318,7 +324,7 @@ function createArray() {
         let row = new Array(sideInPixels);
         for (let j = 1; j <= sideInPixels; j++) {
             let pixel = document.getElementById(i + ' ' + j).style.getPropertyValue('background-color');
-            row[j - 1] = pixel;
+            row[j - 1] = rgb2rgba(pixel);
         }
         canvasArray[i - 1] = row;
     }
