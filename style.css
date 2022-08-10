@@ -9,6 +9,7 @@
     --front2:rgb(132, 126, 135);
     --defaultcanv:rgb(250, 230, 240);
     --pencolor:rgb(17, 17, 17);
+    --manageColor: #222034;
     --border: 0;
 }
 
@@ -24,6 +25,10 @@ body {
 
 ::-webkit-scrollbar {
   width: 0;
+}
+
+#outputText {
+    display: none;
 }
 
 #leftside {
@@ -126,7 +131,7 @@ img {
 }
 
 .manage {
-    background-color: #222034;
+    background-color: var(--manageColor);
     display: flex;
     align-items: center;
     justify-content: center;

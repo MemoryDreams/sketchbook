@@ -12,24 +12,36 @@ let rainBow = '#ee34d2, #9c27b0, #509ae6, #16d0cb, #66ff66, #ccff00, #ffff66, #f
 let currentIndex = rainBow.indexOf('#ee34d2'); 
 
 function setTool(tool) {
+    document.getElementById('pen').style.backgroundColor = rootStyle.getPropertyValue('--manageColor');
+    document.getElementById('eraser').style.backgroundColor = rootStyle.getPropertyValue('--manageColor');
+    document.getElementById('bucket').style.backgroundColor = rootStyle.getPropertyValue('--manageColor');
+    document.getElementById('dripper').style.backgroundColor = rootStyle.getPropertyValue('--manageColor');
+    document.getElementById('rainbow').style.backgroundColor = rootStyle.getPropertyValue('--manageColor');
+    document.getElementById('bucketRainbow').style.backgroundColor = rootStyle.getPropertyValue('--manageColor');
     switch (tool) {
         case 'pen':
+            document.getElementById('pen').style.backgroundColor = rootStyle.getPropertyValue('--back2');
             currentTool = 'pen';
             penColor = document.getElementById('colorhex').value;
             break;
         case 'eraser':
+            document.getElementById('eraser').style.backgroundColor = rootStyle.getPropertyValue('--back2');
             currentTool = 'eraser';
             break;
         case 'bucket':
+            document.getElementById('bucket').style.backgroundColor = rootStyle.getPropertyValue('--back2');
             currentTool = 'bucket';
             break;
         case 'dripper':
+            document.getElementById('dripper').style.backgroundColor = rootStyle.getPropertyValue('--back2');
             currentTool = 'dripper';
             break;
         case 'rainbow':
+            document.getElementById('rainbow').style.backgroundColor = rootStyle.getPropertyValue('--back2');
             currentTool = 'rainbow';
             break;
         case 'bucketRainbow':
+            document.getElementById('bucketRainbow').style.backgroundColor = rootStyle.getPropertyValue('--back2');
             currentTool = 'bucketRainbow';
             break;
     }
@@ -38,7 +50,7 @@ function setTool(tool) {
 function rainbowSlide() {
     let tool = currentTool;
     setColor(rainBow[currentIndex]);
-    currentTool = tool;
+    setTool(tool);
     if (currentIndex + 1 > rainBow.length - 1) {
         currentIndex = 0;
     } else {
@@ -119,6 +131,9 @@ function putPixel() {
             document.getElementById('thatcolorpad').style.backgroundColor = color;
             penColor = color;
             currentTool = 'pen';
+            if (color = defaultCanvColor) {
+                alert('Be ware that color is used for transparency. You would want to use eraser for that or if you need that type of color, change the hex value by one. Thanks!')
+            }
             break;
         case 'rainbow':
             rainbowSlide();
@@ -243,7 +258,7 @@ function clearCells() {
 // Used to set color to your pen
 function setColor(hex) {
     if ((currentTool === 'eraser') || (currentTool === 'dripper') || (currentTool === 'bucketRainbow') || (currentTool === 'rainbow')) {
-        currentTool = 'pen';
+        setTool('pen');
     }
         if (hex[0] === '#') {
             value = hex.slice(1);
@@ -300,6 +315,15 @@ function rgb2hex(val) {
     return '#' + R + G + B;
 }
 
+function transParent(r, g, b) {
+    let value = 'rgb(' + r + ', ' + g + ', ' + b + ')';
+    if (value === defaultCanvColor) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function rgb2rgba(val) {
     let finish = val.length - 1;
     let sliced = val.slice(4, finish)
@@ -308,7 +332,7 @@ function rgb2rgba(val) {
     let G = parseInt(stringAr[1]);
     let B = parseInt(stringAr[2]);
     let A;
-    if ((R === 250) && (G === 230) && (B === 240)) {
+    if (val === defaultCanvColor) {
         A = 0;
     } else {
         A = 255;
@@ -331,6 +355,7 @@ function createArray() {
     return canvasArray;
 }
 
+let pixelSize = 1;
 
 function createImg() {
     if (exists(document.getElementById('output'))) {
@@ -338,10 +363,10 @@ function createImg() {
         document.getElementById('output').remove();
     }
 
+    document.getElementById('outputText').style.display = 'inherit'
     let div = document.createElement('div');
     div.setAttribute('id', 'output');
     document.getElementById('rightside').appendChild(div);
-    var pixelSize = 1;
     var c = document.createElement("canvas");
     var img = createArray();
     c.height = img[0].length * pixelSize;
@@ -363,6 +388,7 @@ function createImg() {
     document.getElementById('output').appendChild(png);
 }
 
+setTool('pen');
 setColor('#111111');
 document.getElementById('thatcolorpad').style.backgroundColor = penColor;
 drawCanvas(32);
