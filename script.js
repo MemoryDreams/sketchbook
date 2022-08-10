@@ -127,13 +127,13 @@ function putPixel() {
             break;
         case 'dripper':
             let color = event.target.style.getPropertyValue('background-color');
-            document.getElementById('colorhex').value = rgb2hex(color);
-            document.getElementById('thatcolorpad').style.backgroundColor = color;
-            penColor = color;
-            currentTool = 'pen';
-            if (color = defaultCanvColor) {
+            if (color === defaultCanvColor) {
                 alert('Be ware that color is used for transparency. You would want to use eraser for that or if you need that type of color, change the hex value by one. Thanks!')
             }
+            console.log(color + ' ' + defaultCanvColor);
+            document.getElementById('colorhex').value = rgb2hex(color);
+            document.getElementById('thatcolorpad').style.backgroundColor = color;
+            setColor(rgb2hex(color));
             break;
         case 'rainbow':
             rainbowSlide();
