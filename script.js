@@ -8,8 +8,8 @@ document.body.onmouseup = () => (mouseDown = false)
 
 let currentTool = 'pen';
 
-let rainBow = '#ff00cc, #ee34d2, #9c27b0, #50bfe6, #16d0cb, #aaf0d1, #66ff66, #ccff00, #ffff66, #ffcc33, #ff9933, #ff9966, #ff6037, #fd5b78, #ff355e'.split(', ');
-let currentIndex = rainBow.indexOf('#ff00cc'); 
+let rainBow = '#ee34d2, #9c27b0, #509ae6, #16d0cb, #66ff66, #ccff00, #ffff66, #ffcc33, #ff9933, #ff9966, #ff6037, #fd5b78, #ff355e'.split(', ');
+let currentIndex = rainBow.indexOf('#ee34d2'); 
 
 function setTool(tool) {
     switch (tool) {
@@ -132,8 +132,8 @@ let filling;
 let defaultCanvColor = rootStyle.getPropertyValue('--defaultcanv');
 
 function bucketRainbowAction(y, x) {
+    rainbowSlide();
     if (document.getElementById(y + ' ' + x).style.getPropertyValue('background-color') !== penColor) {
-        rainbowSlide();
         document.getElementById(y + ' ' + x).style.backgroundColor = penColor;
         const downX = x + 1;
         const downY = y + 1;
@@ -307,23 +307,30 @@ function rgb2pngStart(val) {
     let R = parseInt(stringAr[0]);
     let G = parseInt(stringAr[1]);
     let B = parseInt(stringAr[2]);
-    let pixelArray = [R, G, B];
+    let pixelArray = [R, G, B, 255];
     return pixelArray;
 }
 
 function createArray() {
     let sideInPixels = document.documentElement.style.getPropertyValue('--number');
-    let canvasX = [];
-    let canvasY = [];
+    let row = [Array(sideInPixels)];
     for (let i = 1; i <= sideInPixels; i++) {
         for (let j = 1; j <= sideInPixels; j++) {
-            let pixel = document.getElementById(i + ' ' + j).style.backgroundColor;
-            canvasX[j - 1] = rgb2pngStart(pixel);
+            let pixel = document.getElementById(i + ' ' + j).style.getPropertyValue('background-color');
+            console.log(i + ':' + j + ' color is ' + rgb2pngStart(pixel));
+            row[i - 1][j - 1] = rgb2pngStart(pixel);
+            console.log(row);
         }
-        canvasY[i - 1] = canvasX;
     }
-    return canvasY; 
+    // let actualCanvas = new Uint8ClampedArray(canvasY);
+    // return actualCanvas; 
 }
 
+
+function createImg() {
+    createArray();
+}
+
+setColor('#112111');
 document.getElementById('thatcolorpad').style.backgroundColor = penColor;
-drawCanvas(4);
+drawCanvas(100);

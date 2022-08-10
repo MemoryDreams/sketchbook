@@ -163,6 +163,14 @@ h1 {
     grid-template-rows: repeat(var(--number), 1fr);
 }
 
+#output {
+    border: 2px solid var(--back-1);
+    width: 400px;
+    height: 400px;
+    background-color: var(--back1);
+    margin-top: 20px;
+}
+
 .pixel {
     background-color: var(--defaultcanv);
     border: var(--border) solid var(--front2);
