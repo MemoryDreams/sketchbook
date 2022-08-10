@@ -169,6 +169,7 @@ h1 {
     height: 400px;
     background-color: var(--back1);
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .pixel {
