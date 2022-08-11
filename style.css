@@ -89,6 +89,7 @@ img {
 
 #colorhex {
     width: calc(var(--boxinside) - 30px); 
+    font-family: monospace;
     height: 20px;
     background-color: var(--back2);
     border: 2px solid var(--back-1);
@@ -152,7 +153,7 @@ hr {
 
 h1 {
     color: var(--front1);
-    margin-top: 50px;
+    margin-top: 20px;
     font-family: monospace;
 }
 
@@ -166,8 +167,8 @@ h1 {
 
 #canvas {
     border: 2px solid var(--back-1);
-    width: 400px;
-    height: 400px;
+    width: 550px;
+    height: 550px;
     background-color: var(--back1);
     margin-top: 20px;
     display: grid;

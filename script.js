@@ -22,9 +22,53 @@ let defaultCanvColor = rootStyle.getPropertyValue('--defaultcanv');
 //This function is solely to avoid using that line every time.
 function plainColor(coord) {
     document.getElementById(coord).style.backgroundColor = penColor;
+    let ident = coord.trim().split(/\s+/);
+    let x = parseInt(ident[0]);
+    let y = parseInt(ident[1]);
+    cx1 = cx2;
+    cy1 = cy2;
+    cx2 = x;
+    cy2 = y;
+    straightLine(cx1, cy1, cx2, cy2);
+}
+
+function nullify() {
+    if (!(currentTool == 'liner')) {
+        cx1 = undefined;
+        cy1 = undefined;
+        cx2 = undefined;
+        cy2 = undefined;
+    }
+}
+
+function straightLine(x1, y1, x2, y2) {
+    if (x1 !== undefined) {
+        let dx = Math.abs(x2 - x1);
+        let dy = Math.abs(y2 - y1);
+        let sx = (x1 < x2) ? 1 : -1;
+        let sy = (y1 < y2) ? 1 : -1;
+        let err = dx - dy;
+        // Set first coordinates
+        document.getElementById(x1 + ' ' + y1).style.backgroundColor = penColor;
+
+        // Main loop
+        while (!((x1 == x2) && (y1 == y2))) {
+            var e2 = err << 1;
+            if (e2 > -dy) {
+                err -= dy;
+                x1 += sx;
+            }
+            if (e2 < dx) {
+                err += dx;
+                y1 += sy;
+            }
+            document.getElementById(x1 + ' ' + y1).style.backgroundColor = penColor;
+        }
+    }
 }
 
 function setTool(tool) {
+    nullify()
     document.getElementById(currentTool).style.backgroundColor = buttonColor;
     document.getElementById(tool).style.backgroundColor = pressedButtonColor;
     currentTool = tool;
@@ -44,7 +88,7 @@ function rainbowSlide() {
     }
 }
 
-// I honestly don't like this style of code. Anonymous functions suck and I'd prefer not to use it. It works though. Used for entering input value into a function.
+//Used for entering input value into a function.
 document.getElementById('colorhex').addEventListener('keypress', function(e) {
     let val = document.getElementById('colorhex').value;
     if (e.key === 'Enter') {
@@ -88,8 +132,8 @@ function putPixel() {
     let ident = event.target.id; //the ID of current tile, used for bucket and plainColor functions.
     let tileColor = document.getElementById(ident).style.getPropertyValue('background-color');
     let coord = ident.trim().split(/\s+/);
-    let y = parseInt(coord[0]);
-    let x = parseInt(coord[1]);
+    let x = parseInt(coord[0]);
+    let y = parseInt(coord[1]);
     switch (currentTool) {
         case 'pen':
             plainColor(ident); //Just colors the tile
@@ -112,10 +156,21 @@ function putPixel() {
         case 'rainbow':
             rainbowSlide();
             plainColor(ident);
+            break;    
+        case 'liner':
+            cx1 = cx2;
+            cy1 = cy2;
+            cx2 = x;
+            cy2 = y;
+            event.target.style.backgroundColor = penColor;
+            straightLine(cx1, cy1, cx2, cy2);
             break;            
     }
 }
-
+let cx1;
+let cy1;
+let cx2 = cx1;
+let cy2 = cy1;
 
 
 function bucketRainbowAction(y, x, filling) {
@@ -178,6 +233,7 @@ function bucketAction(y, x, filling) {
         }
 }
 
+//used to change the canvas size
 function drawCanvas(pix) {
     clearCanvas();
     document.documentElement.style.setProperty('--number', pix);
@@ -189,6 +245,7 @@ function drawCanvas(pix) {
             div.style.setProperty('background-color', defaultCanvColor);
             div.addEventListener("mousedown", function(){ putPixel(); });
             div.addEventListener("mouseover", function(){ drawPixel(); });
+            div.addEventListener("mouseup", function(){ nullify(); });
             canvas.appendChild(div);
         }
     }
@@ -351,6 +408,8 @@ function createImg(pixelSize) {
     c.remove();
     document.getElementById('output').appendChild(png);
 }
+
+
 
 setTool('pen');
 setColor('#111111');
