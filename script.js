@@ -92,42 +92,35 @@ function drawPixel() {
 
 //check current tool and then go to dedicated function
 function putPixel() {
-    let coord = event.target.id;
+    let ident = event.target.id; //the ID of current tile, used for bucket and plainColor functions.
+    let tileColor = document.getElementById(ident).style.getPropertyValue('background-color');
+    let coord = ident.trim().split(/\s+/);
+    let y = parseInt(coord[0]);
+    let x = parseInt(coord[1]);
     switch (currentTool) {
         case 'pen':
-            plainColor(coord);
+            plainColor(ident);
             break;
         case 'eraser':
-            event.target.style.backgroundColor = rootStyle.getPropertyValue('--defaultcanv');
+            event.target.style.backgroundColor = defaultCanvColor;
             break;
         case 'bucket':
-            let ident = event.target.id;
-            let coord2 = ident.trim().split(/\s+/);
-            let y = parseInt(coord2[0]);
-            let x = parseInt(coord2[1]);
-            filling = event.target.style.getPropertyValue('background-color');
+            filling = tileColor;
             bucketAction(y, x);
             break;
         case 'bucketRainbow':
-            let ident1 = event.target.id;
-            let coord1 = ident1.trim().split(/\s+/);
-            let y1 = parseInt(coord1[0]);
-            let x1 = parseInt(coord1[1]);
-            filling = event.target.style.getPropertyValue('background-color');
-            bucketRainbowAction(y1, x1);
+            filling = tileColor;
+            bucketRainbowAction(y, x);
             break;
         case 'dripper':
-            let color = event.target.style.getPropertyValue('background-color');
-            if (color === defaultCanvColor) {
+            if (tileColor === defaultCanvColor) {
                 alert('Be ware that color is used for transparency. You would want to use eraser for that or if you need that type of color, change the hex value by one. Thanks!')
             }
-            document.getElementById('colorhex').value = rgb2hex(color);
-            document.getElementById('thatcolorpad').style.backgroundColor = color;
-            setColor(rgb2hex(color));
+            setColor(rgb2hex(tileColor));
             break;
         case 'rainbow':
             rainbowSlide();
-            plainColor(coord);
+            plainColor(ident);
             break;            
     }
 }
