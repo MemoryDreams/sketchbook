@@ -36,7 +36,7 @@
             </div>
             <div id="hexvaluepad">
                 <input id="colorhex" placeholder="" value="#111111" >
-                <div id="thatcolorpad"></div>
+                <div id="thatcolorpad" onclick="setColor(document.getElementById('colorhex').value)"></div>
             </div>
         </div>
         <hr>
@@ -58,7 +58,7 @@
         <div id="preferences">
             <button class="manage" id="cells" onclick="setCells()"><img src="cells.png"></button>
             <button class="manage" id="clear" onclick="clearPic()"><img src="clearbutt.png"></button>
-            <button class="manage" id="clear" onclick="createImg()"><img src="save.png"></button>
+            <button class="manage" id="clear" onclick="createImg(1)"><img src="save.png"></button>
         </div>
         <div>
 

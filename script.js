@@ -1,49 +1,42 @@
 const canvas = document.getElementById('canvas');
 const rootStyle = getComputedStyle(document.documentElement);
 let penColor = rootStyle.getPropertyValue('--pencolor');
+let mouseDown = false;
+document.body.onmousedown = () => (mouseDown = true);
+document.body.onmouseup = () => (mouseDown = false);
 
-let mouseDown = false
-document.body.onmousedown = () => (mouseDown = true)
-document.body.onmouseup = () => (mouseDown = false)
+let buttonColor = rootStyle.getPropertyValue('--manageColor');
+let pressedButtonColor = rootStyle.getPropertyValue('--back2');
 
 let currentTool = 'pen';
 
+//rainbow variables, duh
 let rainBow = '#ee34d2, #9c27b0, #509ae6, #16d0cb, #66ff66, #ccff00, #ffff66, #ffcc33, #ff9933, #ff9966, #ff6037, #fd5b78, #ff355e'.split(', ');
 let currentIndex = rainBow.indexOf('#ee34d2'); 
+// This is mostly for buckets, but it's also used in transparency check
+let filling;
+let defaultCanvColor = rootStyle.getPropertyValue('--defaultcanv');
+
+
+
+
+//This function is solely to avoid using that line every time.
+function plainColor(coord) {
+    document.getElementById(coord).style.backgroundColor = penColor;
+}
 
 function setTool(tool) {
-    document.getElementById('pen').style.backgroundColor = rootStyle.getPropertyValue('--manageColor');
-    document.getElementById('eraser').style.backgroundColor = rootStyle.getPropertyValue('--manageColor');
-    document.getElementById('bucket').style.backgroundColor = rootStyle.getPropertyValue('--manageColor');
-    document.getElementById('dripper').style.backgroundColor = rootStyle.getPropertyValue('--manageColor');
-    document.getElementById('rainbow').style.backgroundColor = rootStyle.getPropertyValue('--manageColor');
-    document.getElementById('bucketRainbow').style.backgroundColor = rootStyle.getPropertyValue('--manageColor');
-    switch (tool) {
-        case 'pen':
-            document.getElementById('pen').style.backgroundColor = rootStyle.getPropertyValue('--back2');
-            currentTool = 'pen';
-            penColor = document.getElementById('colorhex').value;
-            break;
-        case 'eraser':
-            document.getElementById('eraser').style.backgroundColor = rootStyle.getPropertyValue('--back2');
-            currentTool = 'eraser';
-            break;
-        case 'bucket':
-            document.getElementById('bucket').style.backgroundColor = rootStyle.getPropertyValue('--back2');
-            currentTool = 'bucket';
-            break;
-        case 'dripper':
-            document.getElementById('dripper').style.backgroundColor = rootStyle.getPropertyValue('--back2');
-            currentTool = 'dripper';
-            break;
-        case 'rainbow':
-            document.getElementById('rainbow').style.backgroundColor = rootStyle.getPropertyValue('--back2');
-            currentTool = 'rainbow';
-            break;
-        case 'bucketRainbow':
-            document.getElementById('bucketRainbow').style.backgroundColor = rootStyle.getPropertyValue('--back2');
-            currentTool = 'bucketRainbow';
-            break;
+    document.getElementById('pen').style.backgroundColor = buttonColor;
+    document.getElementById('eraser').style.backgroundColor = buttonColor;
+    document.getElementById('bucket').style.backgroundColor = buttonColor;
+    document.getElementById('dripper').style.backgroundColor = buttonColor;
+    document.getElementById('rainbow').style.backgroundColor = buttonColor;
+    document.getElementById('bucketRainbow').style.backgroundColor = buttonColor;
+
+    document.getElementById(tool).style.backgroundColor = pressedButtonColor;
+    currentTool = tool;
+    if (tool === 'pen') {
+        penColor = document.getElementById('colorhex').value;
     }
 }
 
@@ -75,16 +68,13 @@ function exists(element) {
     }
 }
 
-function plainColor() {
-    event.target.style.backgroundColor = penColor;
-}
-
 // Used to allow you draw by dragging the cursor. Works for pen and eraser
 function drawPixel() {
+    let coord = event.target.id;
     switch (currentTool) {
         case 'pen':
             if (mouseDown) {
-                plainColor();
+                plainColor(coord);
             }
             break;
         case 'eraser':
@@ -95,25 +85,26 @@ function drawPixel() {
         case 'rainbow':
             if (mouseDown) {
                 rainbowSlide();
-                plainColor();
+                plainColor(coord);
             }
     }
 }
 
 //check current tool and then go to dedicated function
 function putPixel() {
+    let coord = event.target.id;
     switch (currentTool) {
         case 'pen':
-            plainColor();
+            plainColor(coord);
             break;
         case 'eraser':
             event.target.style.backgroundColor = rootStyle.getPropertyValue('--defaultcanv');
             break;
         case 'bucket':
             let ident = event.target.id;
-            let coord = ident.trim().split(/\s+/);
-            let y = parseInt(coord[0]);
-            let x = parseInt(coord[1]);
+            let coord2 = ident.trim().split(/\s+/);
+            let y = parseInt(coord2[0]);
+            let x = parseInt(coord2[1]);
             filling = event.target.style.getPropertyValue('background-color');
             bucketAction(y, x);
             break;
@@ -130,52 +121,45 @@ function putPixel() {
             if (color === defaultCanvColor) {
                 alert('Be ware that color is used for transparency. You would want to use eraser for that or if you need that type of color, change the hex value by one. Thanks!')
             }
-            console.log(color + ' ' + defaultCanvColor);
             document.getElementById('colorhex').value = rgb2hex(color);
             document.getElementById('thatcolorpad').style.backgroundColor = color;
             setColor(rgb2hex(color));
             break;
         case 'rainbow':
             rainbowSlide();
-            plainColor();
+            plainColor(coord);
             break;            
     }
 }
 
 
-let filling;
-let defaultCanvColor = rootStyle.getPropertyValue('--defaultcanv');
 
 function bucketRainbowAction(y, x) {
     rainbowSlide();
     if (document.getElementById(y + ' ' + x).style.getPropertyValue('background-color') !== penColor) {
-        document.getElementById(y + ' ' + x).style.backgroundColor = penColor;
-        const downX = x + 1;
-        const downY = y + 1;
-        const upX = x - 1;
-        const upY = y - 1;
-        const moveDown = document.getElementById(downY + ' ' + x);
-        const moveRight = document.getElementById(y + ' ' + downX);
-        const moveUp = document.getElementById(upY + ' ' + x);
-        const moveLeft = document.getElementById(y + ' ' + upX);
+        plainColor(y + ' ' + x);
+        const moveDown = document.getElementById((y + 1) + ' ' + x);
+        const moveRight = document.getElementById(y + ' ' + (x + 1));
+        const moveUp = document.getElementById((y - 1) + ' ' + x);
+        const moveLeft = document.getElementById(y + ' ' + (x - 1));
         if (exists(moveDown)) {
             if (moveDown.style.getPropertyValue('background-color') == filling) {
-                bucketRainbowAction(downY, x);
+                bucketRainbowAction((y + 1), x);
             } 
         }
         if (exists(moveRight)) {
             if (moveRight.style.getPropertyValue('background-color') == filling) {
-                bucketRainbowAction(y, downX);
+                bucketRainbowAction(y, (x + 1));
             } 
         }
         if (exists(moveUp)) {
             if (moveUp.style.getPropertyValue('background-color') == filling) {
-                bucketRainbowAction(upY, x);
+                bucketRainbowAction((y - 1), x);
             } 
         }
         if (exists(moveLeft)) {
             if (moveLeft.style.getPropertyValue('background-color') == filling) {
-                bucketRainbowAction(y, upX);
+                bucketRainbowAction(y, (x - 1));
             } 
         }
     }
@@ -183,33 +167,29 @@ function bucketRainbowAction(y, x) {
 
 // Check if you aren't trying to fill for instance black blob with black ink and then perform a recursice algorithm
 function bucketAction(y, x) {
-        document.getElementById(y + ' ' + x).style.backgroundColor = penColor;
-        const downX = x + 1;
-        const downY = y + 1;
-        const upX = x - 1;
-        const upY = y - 1;
-        const moveDown = document.getElementById(downY + ' ' + x);
-        const moveRight = document.getElementById(y + ' ' + downX);
-        const moveUp = document.getElementById(upY + ' ' + x);
-        const moveLeft = document.getElementById(y + ' ' + upX);
+        plainColor(y + ' ' + x);
+        const moveDown = document.getElementById((y + 1) + ' ' + x);
+        const moveRight = document.getElementById(y + ' ' + (x + 1));
+        const moveUp = document.getElementById((y - 1) + ' ' + x);
+        const moveLeft = document.getElementById(y + ' ' + (x - 1));
         if (exists(moveDown)) {
             if (moveDown.style.getPropertyValue('background-color') == filling) {
-                bucketAction(downY, x);
+                bucketAction((y + 1), x);
             } 
         }
         if (exists(moveRight)) {
             if (moveRight.style.getPropertyValue('background-color') == filling) {
-                bucketAction(y, downX);
+                bucketAction(y, (x + 1));
             } 
         }
         if (exists(moveUp)) {
             if (moveUp.style.getPropertyValue('background-color') == filling) {
-                bucketAction(upY, x);
+                bucketAction((y - 1), x);
             } 
         }
         if (exists(moveLeft)) {
             if (moveLeft.style.getPropertyValue('background-color') == filling) {
-                bucketAction(y, upX);
+                bucketAction(y, (x - 1));
             } 
         }
 }
@@ -324,6 +304,8 @@ function transParent(r, g, b) {
     }
 }
 
+// The next three functions are for save button.
+
 function rgb2rgba(val) {
     let finish = val.length - 1;
     let sliced = val.slice(4, finish)
@@ -355,9 +337,7 @@ function createArray() {
     return canvasArray;
 }
 
-let pixelSize = 1;
-
-function createImg() {
+function createImg(pixelSize) {
     if (exists(document.getElementById('output'))) {
         document.getElementById('output').querySelector('img').remove();
         document.getElementById('output').remove();
