@@ -140,10 +140,10 @@ img {
 button {
     border: 2px solid var(--back-1);
 }
-
+/* 
 button:hover {
     background-color: var(--back2);
-}
+} */
 
 hr {
     width: 80%;

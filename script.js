@@ -6,15 +6,14 @@ document.body.onmousedown = () => (mouseDown = true);
 document.body.onmouseup = () => (mouseDown = false);
 
 let buttonColor = rootStyle.getPropertyValue('--manageColor');
-let pressedButtonColor = rootStyle.getPropertyValue('--back2');
+let pressedButtonColor = rootStyle.getPropertyValue('--back3');
 
 let currentTool = 'pen';
 
 //rainbow variables, duh
 let rainBow = '#ee34d2, #9c27b0, #509ae6, #16d0cb, #66ff66, #ccff00, #ffff66, #ffcc33, #ff9933, #ff9966, #ff6037, #fd5b78, #ff355e'.split(', ');
 let currentIndex = rainBow.indexOf('#ee34d2'); 
-// This is mostly for buckets, but it's also used in transparency check
-let filling;
+//used for transparency check
 let defaultCanvColor = rootStyle.getPropertyValue('--defaultcanv');
 
 
@@ -26,13 +25,7 @@ function plainColor(coord) {
 }
 
 function setTool(tool) {
-    document.getElementById('pen').style.backgroundColor = buttonColor;
-    document.getElementById('eraser').style.backgroundColor = buttonColor;
-    document.getElementById('bucket').style.backgroundColor = buttonColor;
-    document.getElementById('dripper').style.backgroundColor = buttonColor;
-    document.getElementById('rainbow').style.backgroundColor = buttonColor;
-    document.getElementById('bucketRainbow').style.backgroundColor = buttonColor;
-
+    document.getElementById(currentTool).style.backgroundColor = buttonColor;
     document.getElementById(tool).style.backgroundColor = pressedButtonColor;
     currentTool = tool;
     if (tool === 'pen') {
@@ -70,7 +63,7 @@ function exists(element) {
 
 // Used to allow you draw by dragging the cursor. Works for pen and eraser
 function drawPixel() {
-    let coord = event.target.id;
+    let coord = event.target.id;//the ID of current tile, used for bucket and plainColor functions.
     switch (currentTool) {
         case 'pen':
             if (mouseDown) {
@@ -99,18 +92,16 @@ function putPixel() {
     let x = parseInt(coord[1]);
     switch (currentTool) {
         case 'pen':
-            plainColor(ident);
+            plainColor(ident); //Just colors the tile
             break;
         case 'eraser':
-            event.target.style.backgroundColor = defaultCanvColor;
+            event.target.style.backgroundColor = defaultCanvColor; //Colors the tile in default canvas color
             break;
         case 'bucket':
-            filling = tileColor;
-            bucketAction(y, x);
+            bucketAction(x, y, tileColor);
             break;
         case 'bucketRainbow':
-            filling = tileColor;
-            bucketRainbowAction(y, x);
+            bucketRainbowAction(x, y, tileColor);
             break;
         case 'dripper':
             if (tileColor === defaultCanvColor) {
@@ -127,7 +118,7 @@ function putPixel() {
 
 
 
-function bucketRainbowAction(y, x) {
+function bucketRainbowAction(y, x, filling) {
     rainbowSlide();
     if (document.getElementById(y + ' ' + x).style.getPropertyValue('background-color') !== penColor) {
         plainColor(y + ' ' + x);
@@ -137,29 +128,29 @@ function bucketRainbowAction(y, x) {
         const moveLeft = document.getElementById(y + ' ' + (x - 1));
         if (exists(moveDown)) {
             if (moveDown.style.getPropertyValue('background-color') == filling) {
-                bucketRainbowAction((y + 1), x);
+                bucketRainbowAction((y + 1), x, filling);
             } 
         }
         if (exists(moveRight)) {
             if (moveRight.style.getPropertyValue('background-color') == filling) {
-                bucketRainbowAction(y, (x + 1));
+                bucketRainbowAction(y, (x + 1), filling);
             } 
         }
         if (exists(moveUp)) {
             if (moveUp.style.getPropertyValue('background-color') == filling) {
-                bucketRainbowAction((y - 1), x);
+                bucketRainbowAction((y - 1), x, filling);
             } 
         }
         if (exists(moveLeft)) {
             if (moveLeft.style.getPropertyValue('background-color') == filling) {
-                bucketRainbowAction(y, (x - 1));
+                bucketRainbowAction(y, (x - 1), filling);
             } 
         }
     }
 }
 
 // Check if you aren't trying to fill for instance black blob with black ink and then perform a recursice algorithm
-function bucketAction(y, x) {
+function bucketAction(y, x, filling) {
         plainColor(y + ' ' + x);
         const moveDown = document.getElementById((y + 1) + ' ' + x);
         const moveRight = document.getElementById(y + ' ' + (x + 1));
@@ -167,22 +158,22 @@ function bucketAction(y, x) {
         const moveLeft = document.getElementById(y + ' ' + (x - 1));
         if (exists(moveDown)) {
             if (moveDown.style.getPropertyValue('background-color') == filling) {
-                bucketAction((y + 1), x);
+                bucketAction((y + 1), x, filling);
             } 
         }
         if (exists(moveRight)) {
             if (moveRight.style.getPropertyValue('background-color') == filling) {
-                bucketAction(y, (x + 1));
+                bucketAction(y, (x + 1), filling);
             } 
         }
         if (exists(moveUp)) {
             if (moveUp.style.getPropertyValue('background-color') == filling) {
-                bucketAction((y - 1), x);
+                bucketAction((y - 1), x, filling);
             } 
         }
         if (exists(moveLeft)) {
             if (moveLeft.style.getPropertyValue('background-color') == filling) {
-                bucketAction(y, (x - 1));
+                bucketAction(y, (x - 1), filling);
             } 
         }
 }
