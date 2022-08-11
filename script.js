@@ -16,6 +16,8 @@ let currentIndex = rainBow.indexOf('#ee34d2');
 //used for transparency check
 let defaultCanvColor = rootStyle.getPropertyValue('--defaultcanv');
 
+let bypass = false;
+
 
 
 
@@ -68,7 +70,9 @@ function straightLine(x1, y1, x2, y2) {
 }
 
 function setTool(tool) {
-    nullify()
+    if (!bypass) {
+        nullify()
+    }
     document.getElementById(currentTool).style.backgroundColor = buttonColor;
     document.getElementById(tool).style.backgroundColor = pressedButtonColor;
     currentTool = tool;
@@ -79,8 +83,10 @@ function setTool(tool) {
 
 function rainbowSlide() {
     let tool = currentTool;
+    bypass = true;
     setColor(rainBow[currentIndex]);
     setTool(tool);
+    bypass = false;
     if (currentIndex + 1 > rainBow.length - 1) {
         currentIndex = 0;
     } else {
