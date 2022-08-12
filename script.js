@@ -47,25 +47,29 @@ function straightLine(x1, y1, x2, y2) {
     if (x1 !== undefined) {
         let dx = Math.abs(x2 - x1);
         let dy = Math.abs(y2 - y1);
-        let sx = (x1 < x2) ? 1 : -1;
-        let sy = (y1 < y2) ? 1 : -1;
-        let err = dx - dy;
-        // Set first coordinates
-        document.getElementById(x1 + ' ' + y1).style.backgroundColor = penColor;
-
-        // Main loop
-        while (!((x1 == x2) && (y1 == y2))) {
-            var e2 = err << 1;
-            if (e2 > -dy) {
-                err -= dy;
-                x1 += sx;
-            }
-            if (e2 < dx) {
-                err += dx;
-                y1 += sy;
-            }
+        if ((Math.abs(dx) > 1) || (Math.abs(dy) > 1)) {
+            let sx = (x1 < x2) ? 1 : -1;
+            let sy = (y1 < y2) ? 1 : -1;
+            let err = dx - dy;
+            // Set first coordinates
             document.getElementById(x1 + ' ' + y1).style.backgroundColor = penColor;
+
+            // Main loop
+            while (!((x1 == x2) && (y1 == y2))) {
+                var e2 = err << 1;
+                if (e2 > -dy) {
+                    err -= dy;
+                    x1 += sx;
+                }
+                if (e2 < dx) {
+                    err += dx;
+                    y1 += sy;
+                }
+                document.getElementById(x1 + ' ' + y1).style.backgroundColor = penColor;
+            }
+
         }
+        
     }
 }
 

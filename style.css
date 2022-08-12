@@ -169,6 +169,8 @@ h1 {
     border: 2px solid var(--back-1);
     width: 550px;
     height: 550px;
+    max-width: 90vw;
+    max-height: 90vw;
     background-color: var(--back1);
     margin-top: 20px;
     display: grid;
