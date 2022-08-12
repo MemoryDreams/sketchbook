@@ -186,7 +186,7 @@ let cy2 = cy1;
 function bucketRainbowAction(y, x, filling) {
     rainbowSlide();
     if (document.getElementById(y + ' ' + x).style.getPropertyValue('background-color') !== penColor) {
-        plainColor(y + ' ' + x);
+        document.getElementById(y + ' ' + x).style.backgroundColor = penColor;
         const moveDown = document.getElementById((y + 1) + ' ' + x);
         const moveRight = document.getElementById(y + ' ' + (x + 1));
         const moveUp = document.getElementById((y - 1) + ' ' + x);
@@ -216,7 +216,8 @@ function bucketRainbowAction(y, x, filling) {
 
 // Check if you aren't trying to fill for instance black blob with black ink and then perform a recursice algorithm
 function bucketAction(y, x, filling) {
-        plainColor(y + ' ' + x);
+    if (document.getElementById(y + ' ' + x).style.getPropertyValue('background-color') !== penColor) {   
+        document.getElementById(y + ' ' + x).style.backgroundColor = penColor;
         const moveDown = document.getElementById((y + 1) + ' ' + x);
         const moveRight = document.getElementById(y + ' ' + (x + 1));
         const moveUp = document.getElementById((y - 1) + ' ' + x);
@@ -240,7 +241,8 @@ function bucketAction(y, x, filling) {
             if (moveLeft.style.getPropertyValue('background-color') == filling) {
                 bucketAction(y, (x - 1), filling);
             } 
-        }
+        }     
+    }
 }
 
 //used to change the canvas size
@@ -292,8 +294,10 @@ function setColor(hex) {
         setTool('pen');
     }
         if (hex[0] === '#') {
+            document.getElementById('colorhex').value = hex;
             value = hex.slice(1);
         } else {
+            document.getElementById('colorhex').value = '#' + hex;
             value = hex;
         }
         if ((value.length !== 6) && (value.length !== 3)) {
@@ -320,7 +324,6 @@ function setColor(hex) {
         rgbValue = 'rgb(' + rr + ', ' + gg + ', ' + bb + ')';
         penColor = rgbValue;
         document.getElementById('thatcolorpad').style.backgroundColor = rgbValue;
-        document.getElementById('colorhex').value = rgb2hex(rgbValue);
 }
 
 //self-explanatory function. I like to work with hex, but browsers not always allow it. 
