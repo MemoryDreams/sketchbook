@@ -65,6 +65,9 @@ function straightLine(x1, y1, x2, y2) {
                     err += dx;
                     y1 += sy;
                 }
+                if (currentTool === 'rainbow') {
+                    rainbowSlide();
+                }
                 document.getElementById(x1 + ' ' + y1).style.backgroundColor = penColor;
             }
 
